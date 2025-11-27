@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patient Entry</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Hospital Patient Entry Form</h2>
+
+<form action="submit.php" method="POST" onsubmit="encryptData()">
+    <label>Patient Name:</label>
+    <input type="text" id="name" name="name"><br>
+
+    <label>Age:</label>
+    <input type="number" id="age" name="age"><br>
+
+    <label>Disease:</label>
+    <input type="text" id="disease" name="disease"><br>
+
+    <input type="hidden" id="encrypted_name" name="encrypted_name">
+    <input type="hidden" id="encrypted_disease" name="encrypted_disease">
+
+    <button type="submit">Save Patient</button>
+</form>
+
+<script>
+// -------- Caesar Cipher Function -----------
+function caesarEncrypt(text, shift = 3) {
+    let result = "";
+    for (let char of text) {
+        if (char.match(/[a-z]/i)) {
+            let code = char.charCodeAt(0);
+            let base = code >= 97 ? 97 : 65;
+            char = String.fromCharCode(((code - base + shift) % 26) + base);
+        }
+        result += char;
+    }
+    return result;
+}
+
+function encryptData() {
+    const name = document.getElementById('name').value;
+    const disease = document.getElementById('disease').value;
+
+    document.getElementById('encrypted_name').value = caesarEncrypt(name);
+    document.getElementById('encrypted_disease').value = caesarEncrypt(disease);
+
+    document.getElementById('name').disabled = true;
+    document.getElementById('disease').disabled = true;
+}
+</script>
+
+</body>
+</html>
